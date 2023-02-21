@@ -1,5 +1,4 @@
 # Biblioteca Fácil - App de Reservas
-# Biblioteca Fácil - App de Reservas
 Este projeto terá como API a "Open Library API" que é uma API gratuita e de código aberto que fornece acesso a dados de milhões de livros. Desenvolvido em JavaScript em conjunto com banco de dados MySQL.
 
 ### Biblioteca Fácil - App de Reservas
