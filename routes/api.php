@@ -29,29 +29,29 @@ Route::middleware('auth:sanctum')->post('/logout',  [RegisterController::class, 
 
 
 // rotas para Book ✔
-Route::get('/books', [BookController::class, 'index']);
-Route::get('/books/{id}', [BookController::class, 'show']);
-Route::post('/books', [BookController::class, 'store']);
-Route::put('/books/{id}', [BookController::class, 'update']);
-Route::delete('/books/{id}', [BookController::class, 'destroy']);
+Route::middleware('auth:sanctum')->get('/books', [BookController::class, 'index']);
+Route::middleware('auth:sanctum')->get('/books/{id}', [BookController::class, 'show']);
+Route::middleware('auth:sanctum')->post('/books', [BookController::class, 'store']);
+Route::middleware('auth:sanctum')->put('/books/{id}', [BookController::class, 'update']);
+Route::middleware('auth:sanctum')->delete('/books/{id}', [BookController::class, 'destroy']);
 
 // rotas para User ✔
-Route::get('/users', [UserController::class, 'index']);
-Route::get('/users/{id}',  [UserController::class, 'show']);
+Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']);
+Route::middleware('auth:sanctum')->get('/users/{id}',  [UserController::class, 'show']);
 Route::middleware('auth:sanctum')->put('/users/{id}',  [UserController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('/users/{id}',  [UserController::class, 'destroy']);
 
 // emprestimo
-Route::get('/loans', [LoanController::class, 'index']);
-Route::get('/loans/{id}',  [LoanController::class, 'show']);
-Route::post('/loans',  [LoanController::class, 'store']);
+Route::middleware('auth:sanctum')->get('/loans', [LoanController::class, 'index']);
+Route::middleware('auth:sanctum')->get('/loans/{id}',  [LoanController::class, 'show']);
+Route::middleware('auth:sanctum')->post('/loans',  [LoanController::class, 'store']);
 Route::middleware('auth:sanctum')->put('/loans/{id}',  [LoanController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('/loans/{id}',  [LoanController::class, 'destroy']);
 
 // rotas para Copy
-Route::get('/copies', [CopyController::class, 'index']);
-Route::get('/copies/{id}', [CopyController::class, 'show']);
-Route::post('/copies', [CopyController::class, 'store']);
-Route::put('/copies/{id}', [CopyController::class, 'uptade']);
-Route::put('/emprestimo/{id}', [CopyController::class, 'emprestimo']);
-Route::delete('/copies/{id}', [CopyController::class, 'destroy']);
+Route::middleware('auth:sanctum')->get('/copies', [CopyController::class, 'index']);
+Route::middleware('auth:sanctum')->get('/copies/{id}', [CopyController::class, 'show']);
+Route::middleware('auth:sanctum')->post('/copies', [CopyController::class, 'store']);
+Route::middleware('auth:sanctum')->put('/copies/{id}', [CopyController::class, 'uptade']);
+Route::middleware('auth:sanctum')->put('/emprestimo/{id}', [CopyController::class, 'emprestimo']);
+Route::middleware('auth:sanctum')->delete('/copies/{id}', [CopyController::class, 'destroy']);
