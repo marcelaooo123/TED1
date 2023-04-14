@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\CopyController;
+use App\Http\Controllers\LoanController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,29 +29,29 @@ Route::middleware('auth:sanctum')->post('/logout',  [RegisterController::class, 
 
 
 // rotas para Book ✔
-Route::get('/books', 'App\Http\Controllers\BookController@index');
-Route::get('/books/{id}', 'App\Http\Controllers\BookController@show');
-Route::post('/books', 'App\Http\Controllers\BookController@store');
-Route::put('/books/{id}', 'App\Http\Controllers\BookController@update');
-Route::delete('/books/{id}', 'App\Http\Controllers\BookController@destroy');
+Route::get('/books', [BookController::class, 'index']);
+Route::get('/books/{id}', [BookController::class, 'show']);
+Route::post('/books', [BookController::class, 'store']);
+Route::put('/books/{id}', [BookController::class, 'update']);
+Route::delete('/books/{id}', [BookController::class, 'destroy']);
 
 // rotas para User ✔
-Route::get('/users', 'App\Http\Controllers\UserController@index');
-Route::get('/users/{id}', 'App\Http\Controllers\UserController@show');
-Route::middleware('auth:sanctum')->put('/users/{id}', 'App\Http\Controllers\UserController@update');
-Route::middleware('auth:sanctum')->delete('/users/{id}', 'App\Http\Controllers\UserController@destroy');
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/{id}',  [UserController::class, 'show']);
+Route::middleware('auth:sanctum')->put('/users/{id}',  [UserController::class, 'update']);
+Route::middleware('auth:sanctum')->delete('/users/{id}',  [UserController::class, 'destroy']);
 
-// emprestimo 
-Route::get('/loans', 'App\Http\Controllers\LoanController@index');
-Route::get('/loans/{id}', 'App\Http\Controllers\LoanController@show');
-Route::post('/loans', 'App\Http\Controllers\LoanController@store');
-Route::middleware('auth:sanctum')->put('/loans/{id}', 'App\Http\Controllers\LoanController@update');
-Route::middleware('auth:sanctum')->delete('/loans/{id}', 'App\Http\Controllers\LoanController@destroy');
+// emprestimo
+Route::get('/loans', [LoanController::class, 'index']);
+Route::get('/loans/{id}',  [LoanController::class, 'show']);
+Route::post('/loans',  [LoanController::class, 'store']);
+Route::middleware('auth:sanctum')->put('/loans/{id}',  [LoanController::class, 'update']);
+Route::middleware('auth:sanctum')->delete('/loans/{id}',  [LoanController::class, 'destroy']);
 
 // rotas para Copy
-Route::get('/copies', 'App\Http\Controllers\CopyController@index');
-Route::get('/copies/{id}', 'App\Http\Controllers\CopyController@show');
-Route::post('/copies', 'App\Http\Controllers\CopyController@store');
-Route::put('/copies/{id}', 'App\Http\Controllers\CopyController@update');
-Route::put('/emprestimo/{id}', 'App\Http\Controllers\CopyController@emprestimo');
-Route::delete('/copies/{id}', 'App\Http\Controllers\CopyController@destroy');
+Route::get('/copies', [CopyController::class, 'index']);
+Route::get('/copies/{id}', [CopyController::class, 'show']);
+Route::post('/copies', [CopyController::class, 'store']);
+Route::put('/copies/{id}', [CopyController::class, 'uptade']);
+Route::put('/emprestimo/{id}', [CopyController::class, 'emprestimo']);
+Route::delete('/copies/{id}', [CopyController::class, 'destroy']);
