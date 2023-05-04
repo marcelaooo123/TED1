@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoanRequest;
+use App\Http\Requests\LoanUpdateRequest;
 use App\Http\Resources\CopyResource;
 use App\Http\Resources\LoanResource;
 use App\Models\Copy;
@@ -23,34 +25,13 @@ class LoanController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(LoanRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
-            // 'book_id' => 'required|exist:books,id',
-            'copy_id' => 'required|exists:copies,id',
-            'user_date' => 'required|date_format:Y-m-d',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
         $copy = Copy::find($request->copy_id);
         if ($copy->status == "borrowed") {
             return response()->json(["msg" => "Cópia não disponível"], 422);
@@ -64,9 +45,7 @@ class LoanController extends Controller
 
         $loanData = $loan;
 
-        return response()->json([
-            "loan" => $loanData,
-        ]);
+        return LoanResource::collection($loanData);
     }
 
     /**
@@ -82,26 +61,20 @@ class LoanController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Loan  $loan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Loan $loan)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Loan  $loan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Loan $loan)
+    public function update(LoanUpdateRequest $request, Loan $id)
     {
-        //
+        $loan = Loan::find($id);
+        if ($loan) {
+            $loan->update($request->status);
+            return new LoanResource($loan);
+        }
+        return response()->json(['error' => '404 Not Found'], 404);
     }
 
     /**
@@ -110,8 +83,13 @@ class LoanController extends Controller
      * @param  \App\Models\Loan  $loan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Loan $loan)
+    public function destroy($id)
     {
-        //
+        $loan = Loan::find($id);
+        if ($loan) {
+            $loan->delete();
+            return response()->json(null, 204);
+        }
+        return response()->json(['error' => '404 Not Found'], 404);
     }
 }

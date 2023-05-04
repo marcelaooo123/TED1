@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookRequest;
+use App\Http\Requests\BookUpdateRequest;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
@@ -26,15 +28,6 @@ class BookController extends Controller
         return BookResource::collection($books);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -42,21 +35,8 @@ class BookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string',
-            'author_name' => 'required|string',
-            'publisher' => 'required|string',
-            'publish_date' => 'required|string',
-            'isbn_10' => 'required|string',
-            'isbn_13' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
-        }
-
         $book = Book::create($request->all());
 
         return new BookResource($book);
@@ -78,37 +58,14 @@ class BookController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Book $book)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(BookUpdateRequest $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'string',
-            'author' => 'string',
-            'publisher' => 'string',
-            'isbn' => 'string|unique:books,isbn,' . $id,
-            'publish_year' => 'integer|min:1000|max:9999',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
-        }
-
         $books = $this->book->find($id);
         if ($books) {
             $books->update($request->all());

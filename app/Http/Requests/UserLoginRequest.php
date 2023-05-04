@@ -7,7 +7,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\JsonResponse;
 
-class BookRequest extends FormRequest
+class UserLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,15 +27,10 @@ class BookRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string',
-            'author_name' => 'required|string',
-            'publisher' => 'required|string',
-            'publish_date' => 'required|string',
-            'isbn_10' => 'required|string',
-            'isbn_13' => 'required|string',
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:8'
         ];
     }
-
     public function messages()
     {
         return [

@@ -5,7 +5,6 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\CopyController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,9 +18,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login',  [RegisterController::class, 'login']);
@@ -52,6 +48,6 @@ Route::middleware('auth:sanctum')->delete('/loans/{id}',  [LoanController::class
 Route::middleware('auth:sanctum')->get('/copies', [CopyController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/copies/{id}', [CopyController::class, 'show']);
 Route::middleware('auth:sanctum')->post('/copies', [CopyController::class, 'store']);
-Route::middleware('auth:sanctum')->put('/copies/{id}', [CopyController::class, 'uptade']);
+Route::middleware('auth:sanctum')->put('/copies/{id}', [CopyController::class, 'update']);
 Route::middleware('auth:sanctum')->put('/emprestimo/{id}', [CopyController::class, 'emprestimo']);
 Route::middleware('auth:sanctum')->delete('/copies/{id}', [CopyController::class, 'destroy']);

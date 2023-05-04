@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CopyEmprestimoRequest;
+use App\Http\Requests\CopyRequest;
+use App\Http\Requests\CopyUpdateRequest;
 use App\Http\Resources\CopyResource;
 use App\Models\Copy;
 use App\Models\Book;
@@ -28,33 +31,13 @@ class CopyController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CopyRequest $request)
     {
-        $validator = Validator($request->all(), [
-            'book_id' => 'required|exists:books,id',
-            'status' => 'required|string',
-            'unique_key' => 'required|string'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 404);
-        }
-
         $copy = Copy::create($request->all());
         return new CopyResource($copy);
     }
@@ -74,24 +57,13 @@ class CopyController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Copy  $copy
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Copy $copy)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Copy  $copy
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CopyUpdateRequest $request, $id)
     {
         $copy = $this->copy->find($id);
         if ($copy) {
@@ -101,7 +73,7 @@ class CopyController extends Controller
         return response()->json(['error' => '404 Not Found'], 404);
     }
 
-    public function emprestimo(Request $request, $id)
+    public function emprestimo(CopyEmprestimoRequest $request, $id)
     {
         $copy = $this->copy->find($id);
         if ($copy) {
