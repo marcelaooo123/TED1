@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\UserRegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,19 +12,9 @@ use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
-    public function register(Request $request)
+    public function register(UserRegisterRequest $request)
     {
         try {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|unique:users,email|max:255',
-                'password' => 'required|string|min:8|confirmed'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['errors' => $validator->errors()], 400);
-            }
-
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -42,14 +34,10 @@ class RegisterController extends Controller
         }
     }
 
-    public function login(Request $request)
+    public function login(UserLoginRequest $request)
     {
-        $credetials = $request->validate([
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:8'
-        ]);
 
-        if (Auth::attempt($credetials)) {
+        if (Auth::attempt(['email'=>$request->email,'password' => $request->password])) {
             $user = Auth::user();
             $token = $user->createToken('api_token')->plainTextToken;
             return response()->json([

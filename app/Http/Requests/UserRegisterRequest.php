@@ -29,7 +29,8 @@ class UserRegisterRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users,email|max:255',
-            'password' => 'required|string|min:8|confirmed'
+            'password' => 'required|string|min:8|confirmed',
+            'password_confirmation' => 'required|string'
         ];
     }
     public function messages()
